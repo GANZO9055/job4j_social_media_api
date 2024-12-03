@@ -9,6 +9,8 @@ import ru.job4j.socialmedia.model.File;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.model.User;
 import ru.job4j.socialmedia.repository.post.PostRepository;
+import ru.job4j.socialmedia.repository.subscription.SubscriptionRepository;
+import ru.job4j.socialmedia.repository.tape.TapeRepository;
 import ru.job4j.socialmedia.repository.user.UserRepository;
 
 import java.util.List;
@@ -25,9 +27,15 @@ class FileRepositoryTest {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private TapeRepository tapeRepository;
 
     @BeforeEach
     public void deleteAllFile() {
+        tapeRepository.deleteAll();
+        subscriptionRepository.deleteAll();
         fileRepository.deleteAll();
         postRepository.deleteAll();
         userRepository.deleteAll();

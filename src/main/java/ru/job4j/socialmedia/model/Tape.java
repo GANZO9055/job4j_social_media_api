@@ -1,8 +1,7 @@
 package ru.job4j.socialmedia.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +9,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "tapes")
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Tape {
 
     @Id
@@ -18,12 +19,14 @@ public class Tape {
     private Integer id;
 
     @Column(name = "created_post")
-    private LocalDateTime createdPost;
+    private LocalDateTime createdPost = LocalDateTime.now().withNano(0);
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
