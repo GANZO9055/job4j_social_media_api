@@ -1,13 +1,14 @@
 package ru.job4j.socialmedia.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "users")
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -15,7 +16,10 @@ public class User {
     @EqualsAndHashCode.Include
     private Integer id;
 
+    @NonNull
     private String name;
+    @NonNull
     private String email;
+    @NonNull
     private String password;
 }
