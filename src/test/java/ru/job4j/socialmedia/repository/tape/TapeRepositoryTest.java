@@ -1,17 +1,15 @@
 package ru.job4j.socialmedia.repository.tape;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.model.Tape;
 import ru.job4j.socialmedia.model.User;
-import ru.job4j.socialmedia.repository.message.MessageRepository;
 import ru.job4j.socialmedia.repository.post.PostRepository;
-import ru.job4j.socialmedia.repository.subscription.SubscriptionRepository;
 import ru.job4j.socialmedia.repository.user.UserRepository;
 
 import java.util.List;
@@ -20,7 +18,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ActiveProfiles("test")
 class TapeRepositoryTest {
 
     @Autowired
@@ -29,15 +26,16 @@ class TapeRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private MessageRepository messageRepository;
-    @Autowired
-    private SubscriptionRepository subscriptionRepository;
 
     @BeforeEach
     public void deleteAllTape() {
-        subscriptionRepository.deleteAll();
-        messageRepository.deleteAll();
+        tapeRepository.deleteAll();
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
+    @AfterAll
+    public void deleteAll() {
         tapeRepository.deleteAll();
         postRepository.deleteAll();
         userRepository.deleteAll();

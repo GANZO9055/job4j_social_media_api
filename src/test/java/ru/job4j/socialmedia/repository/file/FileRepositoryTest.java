@@ -1,17 +1,15 @@
 package ru.job4j.socialmedia.repository.file;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import ru.job4j.socialmedia.model.File;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.model.User;
 import ru.job4j.socialmedia.repository.post.PostRepository;
-import ru.job4j.socialmedia.repository.subscription.SubscriptionRepository;
-import ru.job4j.socialmedia.repository.tape.TapeRepository;
 import ru.job4j.socialmedia.repository.user.UserRepository;
 
 import java.util.List;
@@ -20,7 +18,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ActiveProfiles("test")
 class FileRepositoryTest {
 
     @Autowired
@@ -29,15 +26,16 @@ class FileRepositoryTest {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SubscriptionRepository subscriptionRepository;
-    @Autowired
-    private TapeRepository tapeRepository;
 
     @BeforeEach
     public void deleteAllFile() {
-        tapeRepository.deleteAll();
-        subscriptionRepository.deleteAll();
+        fileRepository.deleteAll();
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
+    @AfterAll
+    public void deleteAll() {
         fileRepository.deleteAll();
         postRepository.deleteAll();
         userRepository.deleteAll();
