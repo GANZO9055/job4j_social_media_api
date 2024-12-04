@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.job4j.socialmedia.model.Friend;
 import ru.job4j.socialmedia.model.User;
 import ru.job4j.socialmedia.repository.file.FileRepository;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 class FriendRepositoryTest {
 
     @Autowired
