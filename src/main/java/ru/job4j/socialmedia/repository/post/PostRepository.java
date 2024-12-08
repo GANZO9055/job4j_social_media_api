@@ -1,19 +1,19 @@
 package ru.job4j.socialmedia.repository.post;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import ru.job4j.socialmedia.model.Post;
 
-public interface PostRepository extends CrudRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, Integer> {
 
     @Modifying(clearAutomatically = true)
-    @Query("""
+    @Query(value = """
             UPDATE posts
             SET title = :title1, description = :description2
             WHERE id = :id3
-            """
+            """, nativeQuery = true
     )
     int updateTitleAndDescriptionById(
             @Param("title1") String title,
@@ -22,10 +22,10 @@ public interface PostRepository extends CrudRepository<Post, Integer> {
     );
 
     @Modifying(clearAutomatically = true)
-    @Query("""
+    @Query(value = """
             DELETE FROM posts
             WHERE id = :id
-            """
+            """, nativeQuery = true
     )
     int deletePostById(@Param("id") Integer id);
 

@@ -1,8 +1,8 @@
 package ru.job4j.socialmedia.repository.user;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.model.User;
@@ -10,16 +10,16 @@ import ru.job4j.socialmedia.model.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("""
+    @Query(value = """
             SELECT * FROM users
-            WHERE email = :email1 AND password = :password2
-            """
+            WHERE email = :email AND password = :password
+            """, nativeQuery = true
     )
     Optional<User> findByEmailAndPassword(
-            @Param("email1") String email,
-            @Param("password2") String password
+            @Param("email") String email,
+            @Param("password") String password
     );
 
     @Query(value = """
@@ -27,14 +27,14 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             WHERE user_target_id = :id
             """, nativeQuery = true
     )
-    List<User> findByIdAllSubscriptions(@Param("id") Integer id);
+    List<User> findByIdsubscriptions(@Param("id") Integer id);
 
     @Query(value = """
             SELECT * FROM friends
             WHERE requester_id = :id
             """, nativeQuery = true
     )
-    List<User> findByIdAllFriends(@Param("id") Integer id);
+    List<User> findByIdfriends(@Param("id") Integer id);
 
     @Query(value = """
             SELECT p.user_id, p.title, p.description
@@ -45,5 +45,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             ORDER BY t.created_post DESC
             """, nativeQuery = true
     )
-    List<Post> findByIdAllPostsSubscriptions(@Param("id") Integer id, Pageable pageable);
+    List<Post> findByIdposts(@Param("id") Integer id, Pageable pageable);
 }
