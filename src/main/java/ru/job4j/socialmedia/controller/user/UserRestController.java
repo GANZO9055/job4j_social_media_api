@@ -27,7 +27,7 @@ public class UserRestController {
     }
 
     @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteUserById(@PathVariable("userId") Integer id) {
         userService.deleteUserById(id);
     }

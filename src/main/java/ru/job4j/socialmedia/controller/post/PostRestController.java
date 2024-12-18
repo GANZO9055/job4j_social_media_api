@@ -33,7 +33,7 @@ public class PostRestController {
     }
 
     @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public void deletePost(@PathVariable("userId") Integer id) {
         postService.deletePost(id);
     }
