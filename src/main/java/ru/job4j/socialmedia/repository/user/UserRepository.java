@@ -13,9 +13,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = """
-            SELECT * FROM users
+            FROM User
             WHERE email = :email AND password = :password
-            """, nativeQuery = true
+            """
     )
     Optional<User> findByEmailAndPassword(
             @Param("email") String email,
@@ -27,14 +27,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             WHERE user_target_id = :id
             """, nativeQuery = true
     )
-    List<User> findByIdsubscriptions(@Param("id") Integer id);
+    List<User> findByIdSubscriptions(@Param("id") Integer id);
 
     @Query(value = """
             SELECT * FROM friends
             WHERE requester_id = :id
             """, nativeQuery = true
     )
-    List<User> findByIdfriends(@Param("id") Integer id);
+    List<User> findByIdFriends(@Param("id") Integer id);
 
     @Query(value = """
             SELECT p.user_id, p.title, p.description
@@ -45,5 +45,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             ORDER BY t.created_post DESC
             """, nativeQuery = true
     )
-    List<Post> findByIdposts(@Param("id") Integer id, Pageable pageable);
+    List<Post> findByIdPosts(@Param("id") Integer id, Pageable pageable);
 }

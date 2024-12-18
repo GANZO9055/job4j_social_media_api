@@ -9,6 +9,8 @@ import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.repository.post.PostRepository;
 import ru.job4j.socialmedia.service.file.FileService;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class PostService {
@@ -17,9 +19,14 @@ public class PostService {
     private final FileService fileService;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void createNewPost(Post post, File file) {
-        postRepository.save(post);
+    public Post createNewPostWithFile(Post post, File file) {
         fileService.createFile(file);
+        return postRepository.save(post);
+    }
+
+    @Transactional
+    public Post createNewPostWithoutFile(Post post) {
+        return postRepository.save(post);
     }
 
     @Transactional
@@ -41,5 +48,10 @@ public class PostService {
     public void deleteAllPosts() {
         postRepository.deleteAll();
         fileService.deleteAllFile();
+    }
+
+    @Transactional
+    public Optional<Post> findPostById(Integer id) {
+        return postRepository.findById(id);
     }
 }
