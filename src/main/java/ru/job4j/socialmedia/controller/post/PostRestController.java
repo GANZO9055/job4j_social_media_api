@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.service.post.PostService;
 
@@ -23,18 +24,28 @@ public class PostRestController {
 
     @PostMapping
     public ResponseEntity<Post> createPostWithoutFile(@RequestBody Post post) {
-        return ResponseEntity.ok(postService.createNewPostWithoutFile(post));
+        postService.createNewPostWithoutFile(post);
+        var uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public void updatePost(@RequestBody Post post) {
-        postService.updatePost(post);
+    public ResponseEntity<Void> updatePost(@RequestBody Post post) {
+        if (postService.updatePost(post) > 0) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deletePost(@PathVariable("userId") Integer id) {
-        postService.deletePost(id);
+    public ResponseEntity<Void> deletePost(@PathVariable("userId") Integer id) {
+        if (postService.deletePost(id) > 0) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
