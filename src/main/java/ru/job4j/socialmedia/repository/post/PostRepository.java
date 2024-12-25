@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.job4j.socialmedia.model.Post;
 
+import java.util.List;
+
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
     @Modifying(clearAutomatically = true)
@@ -37,4 +39,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             """, nativeQuery = true
     )
     int deleteFileById(@Param("id") Integer id);
+
+    List<Post> findAllByUserIdIn(List<Integer> idUsers);
 }

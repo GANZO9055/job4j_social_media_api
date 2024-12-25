@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.job4j.socialmedia.dto.UserPostDto;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.service.post.PostService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/post")
@@ -47,5 +50,11 @@ public class PostRestController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<UserPostDto>> getListPostsByUserId(
+            @RequestParam List<Integer> idUsers) {
+        return ResponseEntity.ok(postService.getUserPostDto(idUsers));
     }
 }
