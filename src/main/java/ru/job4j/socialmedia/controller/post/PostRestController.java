@@ -53,8 +53,8 @@ public class PostRestController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<UserPostDto>> getListPostsByUserId(
-            @RequestParam List<Integer> idUsers) {
-        return ResponseEntity.ok(postService.getUserPostDto(idUsers));
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserPostDto> getListPostsByUserId(@RequestParam List<Integer> idUsers) {
+        return postService.getUserPostDto(idUsers);
     }
 }

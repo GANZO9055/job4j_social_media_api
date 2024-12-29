@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserPostDto {
-    private Integer userId;
-    private String username;
-    private List<PostDto> posts;
+public class PostDto {
+    private int postId;
+    private String title;
 }

@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.job4j.socialmedia.dto.PostDto;
 import ru.job4j.socialmedia.dto.UserPostDto;
-import ru.job4j.socialmedia.mappers.UserPostMapper;
+import ru.job4j.socialmedia.mappers.PostMapper;
 import ru.job4j.socialmedia.model.File;
 import ru.job4j.socialmedia.model.Post;
 import ru.job4j.socialmedia.model.User;
@@ -25,7 +26,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final FileService fileService;
     private final UserRepository userRepository;
-    private final UserPostMapper userPostMapper;
+    private final PostMapper userPostMapper;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Post createNewPostWithFile(Post post, File file) {
@@ -66,18 +67,17 @@ public class PostService {
 
     public List<UserPostDto> getUserPostDto(List<Integer> idUsers) {
 
-        List<Post> postList = postRepository.findAllByUserIdIn(idUsers);
+        List<Post> postList = postRepository.findByUserId(idUsers);
         List<User> userList = userRepository.findAllById(idUsers);
 
-        Map<Integer, List<Post>> posts = postList.stream()
-                .collect(Collectors.groupingBy(post -> post.getUser().getId()));
+        Map<Integer, List<PostDto>> posts = postList.stream()
+                .map(userPostMapper::getDtoFromModelPost)
+                .collect(Collectors.groupingBy(PostDto::getPostId));
 
-        return userList.stream()
-                .map(user -> {
-                    List<Post> listPosts = posts.getOrDefault(user.getId(), List.of());
-                    return userPostMapper.getDtoFromModel(user, listPosts);
-                })
-                .collect(Collectors.toList());
+        return userList.stream().map(user -> {
+            List<PostDto> userPosts = posts.getOrDefault(user.getId(), List.of());
+            return new UserPostDto(user.getId(), user.getName(), userPosts);
+        }).collect(Collectors.toList());
     }
 
 }
