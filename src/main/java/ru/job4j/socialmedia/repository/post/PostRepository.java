@@ -44,7 +44,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             SELECT p FROM posts AS p
             JOIN users AS u ON p.user_id = u.id
             WHERE p.user_id IN :idUsers
-            ORDER BY p.user_id DESC
+            ORDER BY p.id ASC
             """, nativeQuery = true
     )
     List<Post> findByUserId(@Param("idUsers") List<Integer> idUsers);
