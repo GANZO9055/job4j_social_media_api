@@ -1,8 +1,13 @@
 package ru.job4j.socialmedia.controller.post;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +21,7 @@ import ru.job4j.socialmedia.service.post.PostService;
 
 import java.util.List;
 
+@Tag(name = "PostRestController", description = "PostRestController management APIs")
 @Validated
 @RestController
 @RequestMapping("/api/post")
@@ -24,6 +30,16 @@ public class PostRestController {
 
     private final PostService postService;
 
+    @Operation(
+            summary = "Retrieve a Post by postId",
+            tags = {"Post", "get"}
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = Post.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
+            }
+    )
     @GetMapping("/{postId}")
     public ResponseEntity<Post> get(@PathVariable("postId")
                                     @NotNull
@@ -34,6 +50,16 @@ public class PostRestController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(
+            summary = "Create Post",
+            tags = {"Post", "create"}
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = Post.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
+            }
+    )
     @PostMapping
     public ResponseEntity<Post> createPostWithoutFile(@Valid @RequestBody Post post) {
         postService.createNewPostWithoutFile(post);
@@ -45,6 +71,16 @@ public class PostRestController {
         return ResponseEntity.created(uri).build();
     }
 
+    @Operation(
+            summary = "Update Post",
+            tags = {"Post", "update"}
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema())}),
+                    @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
+            }
+    )
     @PutMapping
     public ResponseEntity<Void> updatePost(@RequestBody Post post) {
         if (postService.updatePost(post) > 0) {
@@ -53,8 +89,18 @@ public class PostRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deletePost(@PathVariable("userId")
+    @Operation(
+            summary = "Delete Post by postId",
+            tags = {"Post", "delete"}
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema())}),
+                    @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
+            }
+    )
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable("postId")
                                            @NotNull
                                            @Min(value = 1, message = "номер поста должен быть 1 или более")
                                            Integer id) {
@@ -64,6 +110,17 @@ public class PostRestController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(
+            summary = "Getting a list of user posts",
+            description = "Getting a list of user posts, using ID users",
+            tags = {"Post", "get"}
+    )
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = UserPostDto.class), mediaType = "application/json")}),
+                    @ApiResponse(responseCode = "400", content = {@Content(schema = @Schema())})
+            }
+    )
     @GetMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
     public List<UserPostDto> getListPostsByUserId(@RequestParam List<Integer> idUsers) {
