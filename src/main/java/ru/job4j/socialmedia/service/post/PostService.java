@@ -1,9 +1,11 @@
 package ru.job4j.socialmedia.service.post;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import ru.job4j.socialmedia.dto.PostDto;
 import ru.job4j.socialmedia.dto.UserPostDto;
 import ru.job4j.socialmedia.mappers.PostMapper;
@@ -19,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Validated
 @Service
 @AllArgsConstructor
 public class PostService {
@@ -35,7 +38,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post createNewPostWithoutFile(Post post) {
+    public Post createNewPostWithoutFile(@Valid Post post) {
         return postRepository.save(post);
     }
 
