@@ -19,7 +19,7 @@ public class User {
     private Integer id;
 
     @NotBlank(message = "имя пользователя не должно быть пустым")
-    @Length(min = 6, message = "имя пользователя должно содержать не менее 6 символов")
+    @Length(min = 3, message = "имя пользователя должно содержать не менее 3 символов")
     @NonNull
     private String name;
     @NonNull
