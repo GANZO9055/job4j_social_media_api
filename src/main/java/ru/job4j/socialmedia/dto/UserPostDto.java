@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UserPostDto {
-    private Integer userId;
+    private Long userId;
     private String username;
     private List<PostDto> posts;
 }

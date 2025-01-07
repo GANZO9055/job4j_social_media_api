@@ -10,8 +10,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,6 +39,7 @@ public class UserRestController {
             }
     )
     @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<User> get(@PathVariable("userId")
                                     @NotNull
                                     @Min(value = 1, message = "номер пользователя должен быть 1 или более")
@@ -59,6 +60,7 @@ public class UserRestController {
             }
     )
     @PostMapping
+    @PreAuthorize("#user.email == authentication.principal.email")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         userService.createUser(user);
         var uri = ServletUriComponentsBuilder
@@ -80,6 +82,7 @@ public class UserRestController {
             }
     )
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUserById(@PathVariable("userId")
                                                @NotNull
                                                @Min(value = 1, message = "номер пользователя должен быть 1 или более")
@@ -102,6 +105,7 @@ public class UserRestController {
             }
     )
     @PutMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> updateUser(@RequestBody User user) {
         if (userService.createUser(user) != null) {
             return ResponseEntity.ok().build();
