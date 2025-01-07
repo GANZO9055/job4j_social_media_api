@@ -14,7 +14,7 @@ public class Post {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Заголовок поста не должен быть пустым")
     @NonNull

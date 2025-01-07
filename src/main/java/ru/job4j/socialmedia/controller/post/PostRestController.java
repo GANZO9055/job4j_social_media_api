@@ -47,7 +47,7 @@ public class PostRestController {
     public ResponseEntity<Post> get(@PathVariable("postId")
                                     @NotNull
                                     @Min(value = 1, message = "номер поста должен быть 1 или более")
-                                    Integer id) {
+                                    Long id) {
         return postService.findPostById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -130,7 +130,7 @@ public class PostRestController {
     @GetMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public List<UserPostDto> getListPostsByUserId(@RequestParam List<Integer> idUsers) {
+    public List<UserPostDto> getListPostsByUserId(@RequestParam List<Long> idUsers) {
         return postService.getUserPostDto(idUsers);
     }
 }

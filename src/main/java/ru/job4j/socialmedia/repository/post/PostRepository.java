@@ -8,7 +8,7 @@ import ru.job4j.socialmedia.model.Post;
 
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query(value = """
@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     int updateTitleAndDescriptionById(
             @Param("title1") String title,
             @Param("description2") String description,
-            @Param("id3") Integer id
+            @Param("id3") Long id
     );
 
     @Modifying(clearAutomatically = true)
@@ -47,5 +47,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             ORDER BY p.id ASC
             """, nativeQuery = true
     )
-    List<Post> findByUserId(@Param("idUsers") List<Integer> idUsers);
+    List<Post> findByUserId(@Param("idUsers") List<Long> idUsers);
 }

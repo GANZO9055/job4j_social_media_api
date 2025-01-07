@@ -64,11 +64,11 @@ public class PostService {
     }
 
     @Transactional
-    public Optional<Post> findPostById(Integer id) {
+    public Optional<Post> findPostById(Long id) {
         return postRepository.findById(id);
     }
 
-    public List<UserPostDto> getUserPostDto(List<Integer> idUsers) {
+    public List<UserPostDto> getUserPostDto(List<Long> idUsers) {
 
         List<Post> postList = postRepository.findByUserId(idUsers);
         List<User> userList = userRepository.findAllById(idUsers);

@@ -43,7 +43,7 @@ public class UserRestController {
     public ResponseEntity<User> get(@PathVariable("userId")
                                     @NotNull
                                     @Min(value = 1, message = "номер пользователя должен быть 1 или более")
-                                    Integer id) {
+                                    Long id) {
         return userService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -86,7 +86,7 @@ public class UserRestController {
     public ResponseEntity<Void> deleteUserById(@PathVariable("userId")
                                                @NotNull
                                                @Min(value = 1, message = "номер пользователя должен быть 1 или более")
-                                               Integer id) {
+                                               Long id) {
         if (userService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
